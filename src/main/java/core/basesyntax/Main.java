@@ -1,35 +1,36 @@
 package core.basesyntax;
 
-import core.basesyntax.io.DataConverter;
-import core.basesyntax.io.DataConverterImpl;
-import core.basesyntax.io.FileReader;
-import core.basesyntax.io.FileReaderImpl;
-import core.basesyntax.io.FileWriter;
-import core.basesyntax.io.FileWriterImpl;
+import core.basesyntax.service.DataConverter;
+import core.basesyntax.service.impl.DataConverterImpl;
+import core.basesyntax.service.FileReader;
+import core.basesyntax.service.impl.FileReaderImpl;
+import core.basesyntax.service.FileWriter;
+import core.basesyntax.service.impl.FileWriterImpl;
 import core.basesyntax.model.FruitTransaction;
-import core.basesyntax.operation.BalanceOperation;
-import core.basesyntax.operation.OperationHandler;
-import core.basesyntax.operation.OperationStrategy;
-import core.basesyntax.operation.OperationStrategyImpl;
-import core.basesyntax.operation.PurchaseOperation;
-import core.basesyntax.operation.ReturnOperation;
-import core.basesyntax.operation.SupplyOperation;
-import core.basesyntax.report.ReportGenerator;
-import core.basesyntax.report.ReportGeneratorImpl;
+import core.basesyntax.strategy.BalanceOperation;
+import core.basesyntax.strategy.OperationHandler;
+import core.basesyntax.strategy.OperationStrategy;
+import core.basesyntax.strategy.OperationStrategyImpl;
+import core.basesyntax.strategy.PurchaseOperation;
+import core.basesyntax.strategy.ReturnOperation;
+import core.basesyntax.strategy.SupplyOperation;
+import core.basesyntax.service.ReportGenerator;
+import core.basesyntax.service.impl.ReportGeneratorImpl;
 import core.basesyntax.service.ShopService;
-import core.basesyntax.service.ShopServiceImpl;
-
+import core.basesyntax.service.impl.ShopServiceImpl;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class Main {
     public static void main(String[] args) {
+        final String inputPath = "src/main/resources/input.csv";
+        final String outputPath = "src/main/resources/finalReport.csv";
+
         FileReader fileReader = new FileReaderImpl();
-        List<String> inputData = fileReader.read("src/main/resources/input.csv");
+        List<String> inputData = fileReader.read(inputPath);
 
         DataConverter dataConverter = new DataConverterImpl();
-        List<FruitTransaction> transactions = dataConverter.convertToTransaction(inputData);
 
         Map<FruitTransaction.Operation, OperationHandler> operationHandlers = new HashMap<>();
         operationHandlers.put(FruitTransaction.Operation.BALANCE, new BalanceOperation());
@@ -38,16 +39,17 @@ public class Main {
         operationHandlers.put(FruitTransaction.Operation.RETURN, new ReturnOperation());
 
         OperationStrategy operationStrategy = new OperationStrategyImpl(operationHandlers);
-
         ShopService shopService = new ShopServiceImpl(operationStrategy);
+
+        final List<FruitTransaction> transactions = dataConverter.convertToTransaction(inputData);
         shopService.process(transactions);
 
         ReportGenerator reportGenerator = new ReportGeneratorImpl();
         String report = reportGenerator.getReport();
 
         FileWriter fileWriter = new FileWriterImpl();
-        fileWriter.write(report, "src/main/resources/finalReport.csv");
+        fileWriter.write(report, outputPath);
 
-//        System.out.println("Звіт успішно створено: src/main/resources/finalReport.csv");
+        System.out.println("Звіт успішно створено: " + outputPath);
     }
 }
