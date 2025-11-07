@@ -11,8 +11,8 @@ public class Storage {
 
     public static void addFruit(String fruit, int quantity) {
         if (fruit == null || quantity < 0) {
-            throw new IllegalArgumentException
-                    ("Fruit name cannot be null and quantity must be non-negative");
+            throw new IllegalArgumentException(
+            "Fruit name cannot be null and quantity must be non-negative");
         }
         fruits.merge(fruit, quantity, Integer::sum);
     }
@@ -26,8 +26,8 @@ public class Storage {
 
     public static void setFruitQuantity(String fruit, int quantity) {
         if (fruit == null || quantity < 0) {
-            throw new IllegalArgumentException
-                    ("Fruit name cannot be null and quantity must be non-negative");
+            throw new IllegalArgumentException(
+            "Fruit name cannot be null and quantity must be non-negative");
         }
         fruits.put(fruit, quantity);
     }
