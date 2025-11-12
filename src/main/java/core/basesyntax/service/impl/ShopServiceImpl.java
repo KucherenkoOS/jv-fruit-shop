@@ -1,6 +1,7 @@
 package core.basesyntax.service.impl;
 
 import core.basesyntax.model.FruitTransaction;
+import core.basesyntax.model.Operation;
 import core.basesyntax.service.ShopService;
 import core.basesyntax.strategy.OperationHandler;
 import core.basesyntax.strategy.OperationStrategy;
@@ -27,15 +28,17 @@ public class ShopServiceImpl implements ShopService {
                 throw new IllegalArgumentException("Transaction cannot be null");
             }
 
-            OperationHandler handler = operationStrategy.get(transaction.getOperation());
+            Operation operation = transaction.getOperation();
+            if (operation == null) {
+                throw new IllegalArgumentException("Transaction operation cannot be null");
+            }
+
+            OperationHandler handler = operationStrategy.get(operation);
             if (handler == null) {
-                throw new IllegalArgumentException("No handler found for operation: "
-                        + transaction.getOperation());
+                throw new IllegalArgumentException("No handler found for operation: " + operation);
             }
 
             handler.apply(transaction);
         }
     }
 }
-
-

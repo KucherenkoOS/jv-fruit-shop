@@ -1,18 +1,20 @@
 package core.basesyntax.strategy;
 
-import core.basesyntax.model.FruitTransaction;
+import core.basesyntax.model.Operation;
 import java.util.Map;
 
 public class OperationStrategyImpl implements OperationStrategy {
-    private final Map<FruitTransaction.Operation, OperationHandler> operationHandlers;
+    private final Map<Operation, OperationHandler> operationHandlers;
 
-    public OperationStrategyImpl(Map<FruitTransaction.Operation,
-            OperationHandler> operationHandlers) {
+    public OperationStrategyImpl(Map<Operation, OperationHandler> operationHandlers) {
+        if (operationHandlers == null) {
+            throw new IllegalArgumentException("Operation handlers map cannot be null");
+        }
         this.operationHandlers = operationHandlers;
     }
 
     @Override
-    public OperationHandler get(FruitTransaction.Operation operation) {
+    public OperationHandler get(Operation operation) {
         return operationHandlers.get(operation);
     }
 }

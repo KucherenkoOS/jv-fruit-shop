@@ -1,12 +1,12 @@
 package core.basesyntax.service.impl;
 
 import core.basesyntax.model.FruitTransaction;
+import core.basesyntax.model.Operation;
 import core.basesyntax.service.DataConverter;
 import java.util.ArrayList;
 import java.util.List;
 
 public class DataConverterImpl implements DataConverter {
-
     private static final String SEPARATOR = ",";
 
     @Override
@@ -42,19 +42,10 @@ public class DataConverterImpl implements DataConverter {
                 throw new IllegalArgumentException("Quantity cannot be negative: " + line);
             }
 
-            FruitTransaction.Operation operation = getOperationByCode(operationCode);
+            Operation operation = Operation.fromCode(operationCode);
             transactions.add(new FruitTransaction(operation, fruit, quantity));
         }
 
         return transactions;
-    }
-
-    private FruitTransaction.Operation getOperationByCode(String code) {
-        for (FruitTransaction.Operation op : FruitTransaction.Operation.values()) {
-            if (op.getCode().equals(code)) {
-                return op;
-            }
-        }
-        throw new RuntimeException("Unknown operation code: " + code);
     }
 }
