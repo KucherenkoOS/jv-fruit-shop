@@ -17,9 +17,9 @@ public class DataConverterImpl implements DataConverter {
 
         List<FruitTransaction> transactions = new ArrayList<>();
 
-        for (int i = 1; i < lines.size(); i++) { // skip header
+        for (int i = 1; i < lines.size(); i++) {
             String line = lines.get(i);
-            if (line == null || line.trim().isEmpty()) {
+            if (line == null || line.isEmpty()) {
                 continue;
             }
 
@@ -28,12 +28,12 @@ public class DataConverterImpl implements DataConverter {
                 throw new RuntimeException("Invalid CSV format at line: " + line);
             }
 
-            String operationCode = parts[0].trim();
-            String fruit = parts[1].trim();
+            String operationCode = parts[0];
+            String fruit = parts[1];
             int quantity;
 
             try {
-                quantity = Integer.parseInt(parts[2].trim());
+                quantity = Integer.parseInt(parts[2]);
             } catch (NumberFormatException e) {
                 throw new RuntimeException("Invalid quantity format at line: " + line, e);
             }

@@ -6,17 +6,6 @@ import java.util.Map;
 public class Storage {
     private static final Map<String, Integer> fruits = new HashMap<>();
 
-    private Storage() {
-    }
-
-    public static void addFruit(String fruit, int quantity) {
-        if (fruit == null || quantity < 0) {
-            throw new IllegalArgumentException(
-            "Fruit name cannot be null and quantity must be non-negative");
-        }
-        fruits.merge(fruit, quantity, Integer::sum);
-    }
-
     public static int getFruitQuantity(String fruit) {
         if (fruit == null) {
             throw new IllegalArgumentException("Fruit name cannot be null");
@@ -34,9 +23,5 @@ public class Storage {
 
     public static Map<String, Integer> getAllFruits() {
         return Map.copyOf(fruits);
-    }
-
-    public static void clear() {
-        fruits.clear();
     }
 }

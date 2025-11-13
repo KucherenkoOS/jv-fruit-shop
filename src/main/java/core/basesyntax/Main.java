@@ -24,12 +24,12 @@ import java.util.List;
 import java.util.Map;
 
 public class Main {
-    public static void main(String[] args) {
-        final String inputPath = "src/main/resources/input.csv";
-        final String outputPath = "src/main/resources/finalReport.csv";
+    private static final String INPUT_PATH = "src/main/resources/input.csv";
+    private static final String OUTPUT_PATH = "src/main/resources/finalReport.csv";
 
+    public static void main(String[] args) {
         FileReader fileReader = new FileReaderImpl();
-        List<String> inputData = fileReader.read(inputPath);
+        List<String> inputData = fileReader.read(INPUT_PATH);
 
         DataConverter dataConverter = new DataConverterImpl();
 
@@ -49,8 +49,6 @@ public class Main {
         String report = reportGenerator.getReport();
 
         FileWriter fileWriter = new FileWriterImpl();
-        fileWriter.write(report, outputPath);
-
-        System.out.println("Звіт успішно створено: " + outputPath);
+        fileWriter.write(report, OUTPUT_PATH);
     }
 }
